@@ -1,56 +1,57 @@
-#! /usr/bin/python
+import http.server, socketserver, os, sys, mmap, re
 
-import socket, struct, sys, os
+# --- НАСТРОЙКИ ---
+PORT = 2800
+BASE_DIR = r"D:\SteamLibrary\steamapps\common\SimpleRockets2\TGettr 0.1.6.5"
+SAVE_DIR = os.path.join(BASE_DIR, "rec")
+if not os.path.exists(SAVE_DIR): os.makedirs(SAVE_DIR)
 
-s = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
-s.bind(("localhost", 2800))
+# Словарь для хранения открытых дескрипторов, чтобы не дергать диск
+mmaps = {}
 
-TypeFormats = [
-    "",     # null
-    "d",    # double (float64)
-    "?",    # bool
-    "ddd"]  # Vector3d
+def get_clean_int(s):
+    try:
+        clean = re.sub(r'[^0-9\-]', '', s.split('.')[0])
+        return clean if clean and clean != '-' else "0"
+    except:
+        return "0"
 
+class TGettrHandler(http.server.BaseHTTPRequestHandler):
+    def do_POST(self):
+        try:
+            content_length = int(self.headers.get('Content-Length', 0))
+            raw_data = self.rfile.read(content_length).decode('utf-8', errors='ignore')
+            if not raw_data: return
+            chunks = raw_data.split("ç")
+            
+            for i in range(25):
+                val = get_clean_int(chunks[i].strip()).ljust(10) # Добиваем пробелами для фикс. длины
+                file_path = os.path.join(SAVE_DIR, f"{i}.txt")
+                
+                try:
+                    # Используем обычную запись, но с принудительной очисткой буфера
+                    with open(file_path, "wb") as f:
+                        f.write(val.encode('ascii'))
+                        f.flush()
+                        os.fsync(f.fileno()) # Выталкиваем данные из кэша Windows прямо сейчас
+                except OSError:
+                    continue
 
-class Packet:
-    def __init__(self, data):
-        self.data = data
-        self.pos = 0
+            self.send_response(200)
+            self.end_headers()
+        except:
+            pass
 
-    def get(self, l):  # get l bytes
-        self.pos += l
-        return self.data[self.pos - l:self.pos]
+    def log_message(self, format, *args): return
 
-    def read(self, fmt):  # read all formatted values
-        v = struct.unpack(fmt, self.get(struct.calcsize(fmt)))
-        if len(v) == 1: return v[0]
-        return v
+class FastTCPServer(socketserver.TCPServer):
+    allow_reuse_address = True
+    def server_bind(self):
+        self.socket.setsockopt(socket.IPPROTO_TCP, socket.TCP_NODELAY, 1)
+        super().server_bind()
 
-    @property
-    def more(self):  # is there more data?
-        return self.pos < len(self.data)
-
-
-def readPacket(dat):
-    p = Packet(dat)
-    messageType = p.read("B")
-
-    if messageType == 1:
-       return
-    elif messageType == 2:
-        messageLen = p.read("I")
-        message = p.get(messageLen).decode('utf-8')
-        print(f"{message}")
-        lis = message.split("ç")
-        for i, s in enumerate(lis):
-            with open(f'rec/{i}.txt', 'w') as file:
-                file.write(s)
-    else:
-        raise Exception("uhhhh something went wrong")
-    sys.stdout.flush()
-
-
-sys.stderr.write("Awaiting connection...\nYou can minimize this window! Just don't close it!\n")
-while 1:
-    d, a = s.recvfrom(2048)
-    readPacket(d)
+print("--- TGettr 0.1.6.5 MEMORY-SYNC MODE ---")
+with FastTCPServer(("", PORT), TGettrHandler) as httpd:
+    try:
+        httpd.serve_forever()
+    except KeyboardInterrupt: sys.exit(0)
