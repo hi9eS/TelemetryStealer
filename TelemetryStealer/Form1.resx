@@ -1,101 +1,15 @@
-Imports System
-Imports System.IO
-Imports System.Drawing
-Imports System.Windows.Forms
-
-Public Class Form1
-    Inherits Form
-
-    Private thingy As Timer
-    Private rocket As Bitmap
-    Private theangle As Integer
-
-    ' Панель для отрисовки стрелки
-    Private WithEvents Panel1 As New Panel With {
-        .Dock = DockStyle.Fill,
-        .BackColor = Color.Black
-    }
-
-    ' Лейблы для телеметрии (пример)
-    Private AltLa As New Label()
-    Private VelLa As New Label()
-    Private ApLa As New Label()
-    Private PeLa As New Label()
-    Private PiLa As New Label()
-    Private MaLa As New Label()
-    Private FuLa As New Label()
-    Private RollLab As New Label()
-    Private YaLa As New Label()
-
-    Public Sub New()
-        Me.Controls.Add(Panel1)
-
-        ' Можно добавить лейблы на форму, если нужно
-        Me.Controls.Add(AltLa)
-        Me.Controls.Add(VelLa)
-        Me.Controls.Add(ApLa)
-        Me.Controls.Add(PeLa)
-        Me.Controls.Add(PiLa)
-        Me.Controls.Add(MaLa)
-        Me.Controls.Add(FuLa)
-        Me.Controls.Add(RollLab)
-        Me.Controls.Add(YaLa)
-    End Sub
-
-    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-        thingy = New Timer()
-        rocket = New Bitmap("arrow.png")
-        rocket.SetResolution(96.0F, 96.0F)
-
-        thingy.Interval = 55
-        AddHandler thingy.Tick, AddressOf Missisipi
-        thingy.Start()
-
-        ' Если есть внешний процесс
-        If File.Exists("recsilent.exe") Then
-            Process.Start("recsilent.exe")
-        End If
-    End Sub
-
-    Private Sub Form1_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
-        For Each process As Process In Process.GetProcessesByName("recsilent")
-            process.Kill()
-        Next
-    End Sub
-
-    Private Sub Missisipi(sender As Object, e As EventArgs)
-        Panel1.Refresh()
-        Dim angleFile = Path.Combine("rec", "8.txt")
-        If File.Exists(angleFile) Then
-            theangle = Convert.ToInt32(File.ReadAllText(angleFile))
-        End If
-
-        Using g As Graphics = Panel1.CreateGraphics()
-            g.TranslateTransform(100, 100)
-            g.RotateTransform(CSng(0 - theangle + 90))
-            g.DrawImage(rocket, -49, -50)
-        End Using
-    End Sub
-
-    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles thingy.Tick
-        ' Пример заполнения лейблов из файлов
-        AltLa.Text = ReadRec("2.txt")
-        VelLa.Text = ReadRec("1.txt")
-        ApLa.Text = ReadRec("3.txt") & " - " & ReadRec("5.txt")
-        PeLa.Text = ReadRec("4.txt")
-        PiLa.Text = ReadRec("8.txt") & "°"
-        MaLa.Text = ReadRec("7.txt")
-        FuLa.Text = ReadRec("6.txt")
-        RollLab.Text = ReadRec("10.txt") & "°"
-        YaLa.Text = ReadRec("9.txt") & "°"
-    End Sub
-
-    Private Function ReadRec(filename As String) As String
-        Dim path = Path.Combine("rec", filename)
-        If File.Exists(path) Then
-            Return File.ReadAllText(path)
-        End If
-        Return "0"
-    End Function
-
-End Class
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype">
+    <value>text/microsoft-resx</value>
+  </resheader>
+  <resheader name="version">
+    <value>2.0</value>
+  </resheader>
+  <resheader name="reader">
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+  <resheader name="writer">
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </resheader>
+</root>
