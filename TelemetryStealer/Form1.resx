@@ -1,41 +1,56 @@
-<?xml version="1.0" encoding="utf-8"?>
-<root>
-  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
-  <resheader name="version"><value>2.0</value></resheader>
-  <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
-  <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </resheader>
+Imports System
+Imports System.IO
+Imports System.Drawing
+Imports System.Windows.Forms
 
-  <!-- HUD Bitmaps placeholders removed to avoid Base64 errors -->
+Public Class Form1
+    Inherits Form
 
-  <!-- Stage Labels -->
-  <data name="LabelStage1.Font" type="System.Drawing.Font, System.Drawing"><value>Segoe UI Semibold, 12pt, style=Bold</value></data>
-  <data name="LabelStage1.ForeColor" type="System.Drawing.Color, System.Drawing"><value>Cyan</value></data>
-  <data name="LabelStage2.Font" type="System.Drawing.Font, System.Drawing"><value>Segoe UI Semibold, 12pt, style=Bold</value></data>
-  <data name="LabelStage2.ForeColor" type="System.Drawing.Color, System.Drawing"><value>Cyan</value></data>
-  <data name="LabelStage3.Font" type="System.Drawing.Font, System.Drawing"><value>Segoe UI Semibold, 12pt, style=Bold</value></data>
-  <data name="LabelStage3.ForeColor" type="System.Drawing.Color, System.Drawing"><value>Cyan</value></data>
+    Private thingy As Timer
+    Private rocket As Bitmap
+    Private theangle As Integer
 
-  <!-- Timer Label -->
-  <data name="LabelTimer.Font" type="System.Drawing.Font, System.Drawing"><value>Segoe UI Semibold, 26pt, style=Bold</value></data>
-  <data name="LabelTimer.ForeColor" type="System.Drawing.Color, System.Drawing"><value>Cyan</value></data>
+    Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
+        thingy = New Timer()
+        Process.Start("recsilent.exe")
+        rocket = New Bitmap("arrow.png")
+        rocket.SetResolution(96.0F, 96.0F)
+        thingy.Interval = 55
+        AddHandler thingy.Tick, AddressOf Missisipi
+        thingy.Start()
+    End Sub
 
-  <!-- Propellant Label -->
-  <data name="LabelProp.Font" type="System.Drawing.Font, System.Drawing"><value>Segoe UI Semibold, 14pt, style=Bold</value></data>
-  <data name="LabelProp.ForeColor" type="System.Drawing.Color, System.Drawing"><value>Cyan</value></data>
+    Private Sub Form1_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
+        For Each process As Process In Process.GetProcessesByName("recsilent")
+            process.Kill()
+        Next
+    End Sub
 
-  <!-- Speed/Alt/Pitch/Yaw/Roll Labels -->
-  <data name="SpeedLabel.Font" type="System.Drawing.Font, System.Drawing"><value>Segoe UI Semibold, 14pt, style=Bold</value></data>
-  <data name="SpeedLabel.ForeColor" type="System.Drawing.Color, System.Drawing"><value>Cyan</value></data>
-  <data name="AltLabel.Font" type="System.Drawing.Font, System.Drawing"><value>Segoe UI Semibold, 14pt, style=Bold</value></data>
-  <data name="AltLabel.ForeColor" type="System.Drawing.Color, System.Drawing"><value>Cyan</value></data>
-  <data name="PitchLabel.Font" type="System.Drawing.Font, System.Drawing"><value>Segoe UI Semibold, 14pt, style=Bold</value></data>
-  <data name="PitchLabel.ForeColor" type="System.Drawing.Color, System.Drawing"><value>Cyan</value></data>
-  <data name="YawLabel.Font" type="System.Drawing.Font, System.Drawing"><value>Segoe UI Semibold, 14pt, style=Bold</value></data>
-  <data name="YawLabel.ForeColor" type="System.Drawing.Color, System.Drawing"><value>Cyan</value></data>
-  <data name="RollLabel.Font" type="System.Drawing.Font, System.Drawing"><value>Segoe UI Semibold, 14pt, style=Bold</value></data>
-  <data name="RollLabel.ForeColor" type="System.Drawing.Color, System.Drawing"><value>Cyan</value></data>
-</root>
+    Private Sub Missisipi(sender As Object, e As EventArgs)
+        Panel1.Refresh()
+        theangle = Convert.ToInt32(File.ReadAllText("rec\8.txt"))
+        Using g As Graphics = Panel1.CreateGraphics()
+            g.TranslateTransform(100, 100)
+            g.RotateTransform(CSng(0 - theangle + 90))
+            g.DrawImage(rocket, -49, -50)
+        End Using
+    End Sub
+
+    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
+        AltLa.Text = File.ReadAllText("rec\2.txt")
+        VelLa.Text = File.ReadAllText("rec\1.txt")
+        ApLa.Text = File.ReadAllText("rec\3.txt") & " - " & File.ReadAllText("rec\5.txt")
+        PeLa.Text = File.ReadAllText("rec\4.txt")
+        PiLa.Text = File.ReadAllText("rec\8.txt") & "°"
+        MaLa.Text = File.ReadAllText("rec\7.txt")
+        FuLa.Text = File.ReadAllText("rec\6.txt")
+        RollLab.Text = File.ReadAllText("rec\10.txt") & "°"
+        YaLa.Text = File.ReadAllText("rec\9.txt") & "°"
+    End Sub
+
+    Protected Overrides Sub OnKeyDown(e As KeyEventArgs)
+        MyBase.OnKeyDown(e)
+        ' твой код для обработки клавиш
+    End Sub
+
+End Class
