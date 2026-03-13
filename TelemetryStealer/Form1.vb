@@ -1,4 +1,5 @@
-Imports System.IO
+Imports System
+Imports System.Windows.Forms
 Imports System.Drawing
 
 Public Class Form1
