@@ -4,10 +4,9 @@ Imports System.Windows.Forms
 Partial Class Form1
     Inherits Form
 
-    ' Таймер
     Private WithEvents Timer1 As Timer
 
-    ' События формы
+    ' События
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles Me.Load
         Timer1.Start()
     End Sub
@@ -22,6 +21,5 @@ Partial Class Form1
 
     Protected Overrides Sub OnKeyDown(e As KeyEventArgs)
         MyBase.OnKeyDown(e)
-        ' Логика клавиш
     End Sub
 End Class
