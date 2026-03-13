@@ -10,14 +10,51 @@ Public Class Form1
     Private rocket As Bitmap
     Private theangle As Integer
 
+    ' Панель для отрисовки стрелки
+    Private WithEvents Panel1 As New Panel With {
+        .Dock = DockStyle.Fill,
+        .BackColor = Color.Black
+    }
+
+    ' Лейблы для телеметрии (пример)
+    Private AltLa As New Label()
+    Private VelLa As New Label()
+    Private ApLa As New Label()
+    Private PeLa As New Label()
+    Private PiLa As New Label()
+    Private MaLa As New Label()
+    Private FuLa As New Label()
+    Private RollLab As New Label()
+    Private YaLa As New Label()
+
+    Public Sub New()
+        Me.Controls.Add(Panel1)
+
+        ' Можно добавить лейблы на форму, если нужно
+        Me.Controls.Add(AltLa)
+        Me.Controls.Add(VelLa)
+        Me.Controls.Add(ApLa)
+        Me.Controls.Add(PeLa)
+        Me.Controls.Add(PiLa)
+        Me.Controls.Add(MaLa)
+        Me.Controls.Add(FuLa)
+        Me.Controls.Add(RollLab)
+        Me.Controls.Add(YaLa)
+    End Sub
+
     Private Sub Form1_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         thingy = New Timer()
-        Process.Start("recsilent.exe")
         rocket = New Bitmap("arrow.png")
         rocket.SetResolution(96.0F, 96.0F)
+
         thingy.Interval = 55
         AddHandler thingy.Tick, AddressOf Missisipi
         thingy.Start()
+
+        ' Если есть внешний процесс
+        If File.Exists("recsilent.exe") Then
+            Process.Start("recsilent.exe")
+        End If
     End Sub
 
     Private Sub Form1_FormClosing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
@@ -28,7 +65,11 @@ Public Class Form1
 
     Private Sub Missisipi(sender As Object, e As EventArgs)
         Panel1.Refresh()
-        theangle = Convert.ToInt32(File.ReadAllText("rec\8.txt"))
+        Dim angleFile = Path.Combine("rec", "8.txt")
+        If File.Exists(angleFile) Then
+            theangle = Convert.ToInt32(File.ReadAllText(angleFile))
+        End If
+
         Using g As Graphics = Panel1.CreateGraphics()
             g.TranslateTransform(100, 100)
             g.RotateTransform(CSng(0 - theangle + 90))
@@ -36,21 +77,25 @@ Public Class Form1
         End Using
     End Sub
 
-    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles Timer1.Tick
-        AltLa.Text = File.ReadAllText("rec\2.txt")
-        VelLa.Text = File.ReadAllText("rec\1.txt")
-        ApLa.Text = File.ReadAllText("rec\3.txt") & " - " & File.ReadAllText("rec\5.txt")
-        PeLa.Text = File.ReadAllText("rec\4.txt")
-        PiLa.Text = File.ReadAllText("rec\8.txt") & "°"
-        MaLa.Text = File.ReadAllText("rec\7.txt")
-        FuLa.Text = File.ReadAllText("rec\6.txt")
-        RollLab.Text = File.ReadAllText("rec\10.txt") & "°"
-        YaLa.Text = File.ReadAllText("rec\9.txt") & "°"
+    Private Sub Timer1_Tick(sender As Object, e As EventArgs) Handles thingy.Tick
+        ' Пример заполнения лейблов из файлов
+        AltLa.Text = ReadRec("2.txt")
+        VelLa.Text = ReadRec("1.txt")
+        ApLa.Text = ReadRec("3.txt") & " - " & ReadRec("5.txt")
+        PeLa.Text = ReadRec("4.txt")
+        PiLa.Text = ReadRec("8.txt") & "°"
+        MaLa.Text = ReadRec("7.txt")
+        FuLa.Text = ReadRec("6.txt")
+        RollLab.Text = ReadRec("10.txt") & "°"
+        YaLa.Text = ReadRec("9.txt") & "°"
     End Sub
 
-    Protected Overrides Sub OnKeyDown(e As KeyEventArgs)
-        MyBase.OnKeyDown(e)
-        ' твой код для обработки клавиш
-    End Sub
+    Private Function ReadRec(filename As String) As String
+        Dim path = Path.Combine("rec", filename)
+        If File.Exists(path) Then
+            Return File.ReadAllText(path)
+        End If
+        Return "0"
+    End Function
 
 End Class
