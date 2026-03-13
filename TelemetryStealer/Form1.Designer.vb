@@ -1,128 +1,86 @@
-Private Sub InitializeComponent()
-    Me.components = New System.ComponentModel.Container()
-    Me.TabControl1 = New System.Windows.Forms.TabControl()
-    Me.TabPage1 = New System.Windows.Forms.TabPage()
-    Me.PanelStage = New System.Windows.Forms.Panel()
-    Me.LabelStage1 = New System.Windows.Forms.Label()
-    Me.LabelStage2 = New System.Windows.Forms.Label()
-    Me.LabelStage3 = New System.Windows.Forms.Label()
-    Me.TimerPanel = New System.Windows.Forms.Panel()
-    Me.LabelTimer = New System.Windows.Forms.Label()
-    Me.PropPanel = New System.Windows.Forms.Panel()
-    Me.LabelProp = New System.Windows.Forms.Label()
-    Me.SpeedLabel = New System.Windows.Forms.Label()
-    Me.AltLabel = New System.Windows.Forms.Label()
-    Me.PitchLabel = New System.Windows.Forms.Label()
-    Me.YawLabel = New System.Windows.Forms.Label()
-    Me.RollLabel = New System.Windows.Forms.Label()
-    Me.TabPage2 = New System.Windows.Forms.TabPage()
-    Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+<Global.Microsoft.VisualBasic.CompilerServices.DesignerGenerated()>
+Partial Class Form1
+    Private components As System.ComponentModel.IContainer
+    Friend WithEvents Timer1 As Timer
+    Friend WithEvents TabControl1 As TabControl
+    Friend WithEvents TabPage1 As TabPage
+    Friend WithEvents PanelStage As Panel
+    Friend WithEvents LabelStage1 As Label
+    Friend WithEvents LabelStage2 As Label
+    Friend WithEvents LabelStage3 As Label
+    Friend WithEvents TimerPanel As Panel
+    Friend WithEvents LabelTimer As Label
+    Friend WithEvents PropPanel As Panel
+    Friend WithEvents LabelProp As Label
+    Friend WithEvents SpeedLabel As Label
+    Friend WithEvents AltLabel As Label
+    Friend WithEvents PitchLabel As Label
+    Friend WithEvents YawLabel As Label
+    Friend WithEvents RollLabel As Label
+    Friend WithEvents TabPage2 As TabPage
 
-    ' TabControl
-    Me.TabControl1.Alignment = TabAlignment.Left
-    Me.TabControl1.Controls.Add(Me.TabPage1)
-    Me.TabControl1.Controls.Add(Me.TabPage2)
-    Me.TabControl1.Location = New Point(0, 0)
-    Me.TabControl1.Size = New Size(800, 480)
-    Me.TabControl1.Multiline = True
+    Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
+        Me.TabControl1 = New TabControl()
+        Me.TabPage1 = New TabPage()
+        Me.PanelStage = New Panel()
+        Me.LabelStage1 = New Label()
+        Me.LabelStage2 = New Label()
+        Me.LabelStage3 = New Label()
+        Me.TimerPanel = New Panel()
+        Me.LabelTimer = New Label()
+        Me.PropPanel = New Panel()
+        Me.LabelProp = New Label()
+        Me.SpeedLabel = New Label()
+        Me.AltLabel = New Label()
+        Me.PitchLabel = New Label()
+        Me.YawLabel = New Label()
+        Me.RollLabel = New Label()
+        Me.TabPage2 = New TabPage()
+        Me.Timer1 = New Timer(Me.components)
 
-    ' TabPage1 - Launch HUD
-    Me.TabPage1.BackColor = Color.FromArgb(25, 25, 25) ' прозрачный тёмный
-    Me.TabPage1.Controls.Add(Me.PanelStage)
-    Me.TabPage1.Controls.Add(Me.TimerPanel)
-    Me.TabPage1.Controls.Add(Me.PropPanel)
-    Me.TabPage1.Controls.Add(Me.SpeedLabel)
-    Me.TabPage1.Controls.Add(Me.AltLabel)
-    Me.TabPage1.Controls.Add(Me.PitchLabel)
-    Me.TabPage1.Controls.Add(Me.YawLabel)
-    Me.TabPage1.Controls.Add(Me.RollLabel)
+        ' Настройки формы
+        Me.SuspendLayout()
+        Me.ClientSize = New Size(800, 600)
+        Me.Text = "Telemetry Stealer"
 
-    ' PanelStage - этапы
-    Me.PanelStage.BackColor = Color.FromArgb(100, 0, 45, 105)
-    Me.PanelStage.Location = New Point(150, 10)
-    Me.PanelStage.Size = New Size(500, 40)
-    Me.PanelStage.BorderStyle = BorderStyle.FixedSingle
-    Me.PanelStage.Controls.Add(Me.LabelStage1)
-    Me.PanelStage.Controls.Add(Me.LabelStage2)
-    Me.PanelStage.Controls.Add(Me.LabelStage3)
+        ' Добавляем TabControl
+        Me.TabControl1.Controls.Add(Me.TabPage1)
+        Me.TabControl1.Controls.Add(Me.TabPage2)
+        Me.TabControl1.Dock = DockStyle.Fill
 
-    ' Stage Labels
-    Dim stages = {Me.LabelStage1, Me.LabelStage2, Me.LabelStage3}
-    Dim names = {"STARTUP", "LIFTOFF", "MAX Q"}
-    For i As Integer = 0 To 2
-        stages(i).Text = names(i)
-        stages(i).Font = New Font("Segoe UI Semibold", 12, FontStyle.Bold)
-        stages(i).ForeColor = Color.Cyan
-        stages(i).Location = New Point(5 + i * 160, 5)
-        stages(i).Size = New Size(150, 30)
-        stages(i).TextAlign = ContentAlignment.MiddleCenter
-        stages(i).BackColor = Color.FromArgb(80, 0, 70, 120)
-    Next
+        ' Настройка TabPage1
+        Me.TabPage1.Controls.Add(Me.PanelStage)
+        Me.TabPage1.Controls.Add(Me.TimerPanel)
+        Me.TabPage1.Controls.Add(Me.PropPanel)
 
-    ' TimerPanel
-    Me.TimerPanel.BackColor = Color.FromArgb(120, 0, 45, 105)
-    Me.TimerPanel.Location = New Point(250, 70)
-    Me.TimerPanel.Size = New Size(300, 60)
-    Me.TimerPanel.BorderStyle = BorderStyle.FixedSingle
-    Me.TimerPanel.Controls.Add(Me.LabelTimer)
+        ' Настройка LabelStage
+        Me.LabelStage1.ForeColor = Color.Cyan
+        Me.LabelStage1.Font = New Font("Segoe UI Semibold", 12, FontStyle.Bold)
+        Me.LabelStage2.ForeColor = Color.Cyan
+        Me.LabelStage2.Font = New Font("Segoe UI Semibold", 12, FontStyle.Bold)
+        Me.LabelStage3.ForeColor = Color.Cyan
+        Me.LabelStage3.Font = New Font("Segoe UI Semibold", 12, FontStyle.Bold)
 
-    Me.LabelTimer.Font = New Font("Segoe UI Semibold", 26, FontStyle.Bold)
-    Me.LabelTimer.ForeColor = Color.Cyan
-    Me.LabelTimer.Location = New Point(0, 0)
-    Me.LabelTimer.Size = New Size(300, 60)
-    Me.LabelTimer.Text = "T- 00:00:30"
-    Me.LabelTimer.TextAlign = ContentAlignment.MiddleCenter
+        ' Настройка LabelTimer
+        Me.LabelTimer.ForeColor = Color.Cyan
+        Me.LabelTimer.Font = New Font("Segoe UI Semibold", 26, FontStyle.Bold)
 
-    ' PropPanel - топливо
-    Me.PropPanel.BackColor = Color.FromArgb(120, 0, 45, 105)
-    Me.PropPanel.Location = New Point(600, 400)
-    Me.PropPanel.Size = New Size(180, 50)
-    Me.PropPanel.BorderStyle = BorderStyle.FixedSingle
-    Me.PropPanel.Controls.Add(Me.LabelProp)
+        ' Настройка LabelProp
+        Me.LabelProp.ForeColor = Color.Cyan
+        Me.LabelProp.Font = New Font("Segoe UI Semibold", 14, FontStyle.Bold)
 
-    Me.LabelProp.Font = New Font("Segoe UI Semibold", 14, FontStyle.Bold)
-    Me.LabelProp.ForeColor = Color.Cyan
-    Me.LabelProp.Location = New Point(10, 10)
-    Me.LabelProp.Size = New Size(160, 30)
-    Me.LabelProp.Text = "PROPELLANT 3/3"
-    Me.LabelProp.TextAlign = ContentAlignment.MiddleCenter
+        ' Настройка остальных Label
+        Dim labels() As Label = {SpeedLabel, AltLabel, PitchLabel, YawLabel, RollLabel}
+        For Each lbl In labels
+            lbl.ForeColor = Color.Cyan
+            lbl.Font = New Font("Segoe UI Semibold", 14, FontStyle.Bold)
+        Next
 
-    ' Speed, Alt, Pitch, Yaw, Roll Labels
-    Me.SpeedLabel.Font = New Font("Segoe UI Semibold", 14, FontStyle.Bold)
-    Me.SpeedLabel.ForeColor = Color.Cyan
-    Me.SpeedLabel.Location = New Point(650, 50)
-    Me.SpeedLabel.Size = New Size(120, 30)
-    Me.SpeedLabel.Text = "0 m/s"
+        ' Добавляем элементы на форму
+        Me.TabPage1.Controls.AddRange({LabelStage1, LabelStage2, LabelStage3, LabelTimer, LabelProp, SpeedLabel, AltLabel, PitchLabel, YawLabel, RollLabel})
+        Me.Controls.Add(Me.TabControl1)
 
-    Me.AltLabel.Font = New Font("Segoe UI Semibold", 14, FontStyle.Bold)
-    Me.AltLabel.ForeColor = Color.Cyan
-    Me.AltLabel.Location = New Point(650, 90)
-    Me.AltLabel.Size = New Size(120, 30)
-    Me.AltLabel.Text = "0 m"
-
-    Me.PitchLabel.Font = New Font("Segoe UI Semibold", 14, FontStyle.Bold)
-    Me.PitchLabel.ForeColor = Color.Cyan
-    Me.PitchLabel.Location = New Point(50, 400)
-    Me.PitchLabel.Size = New Size(120, 30)
-    Me.PitchLabel.Text = "Pitch: 0º"
-
-    Me.YawLabel.Font = New Font("Segoe UI Semibold", 14, FontStyle.Bold)
-    Me.YawLabel.ForeColor = Color.Cyan
-    Me.YawLabel.Location = New Point(50, 440)
-    Me.YawLabel.Size = New Size(120, 30)
-    Me.YawLabel.Text = "Yaw: 0º"
-
-    Me.RollLabel.Font = New Font("Segoe UI Semibold", 14, FontStyle.Bold)
-    Me.RollLabel.ForeColor = Color.Cyan
-    Me.RollLabel.Location = New Point(50, 480)
-    Me.RollLabel.Size = New Size(120, 30)
-    Me.RollLabel.Text = "Roll: 0º"
-
-    ' Form1
-    Me.ClientSize = New Size(800, 480)
-    Me.Controls.Add(Me.TabControl1)
-    Me.FormBorderStyle = FormBorderStyle.None
-    Me.BackColor = Color.Black
-    Me.Name = "Form1"
-    Me.Text = "Telemetry HUD"
-End Sub
+        Me.ResumeLayout(False)
+    End Sub
+End Class
