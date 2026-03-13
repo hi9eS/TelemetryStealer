@@ -26,28 +26,24 @@ Partial Class Form1
 
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Me.TabControl1 = New System.Windows.Forms.TabControl()
-        Me.TabPage1 = New System.Windows.Forms.TabPage()
-        Me.PanelStage = New System.Windows.Forms.Panel()
-        Me.LabelStage1 = New System.Windows.Forms.Label()
-        Me.LabelStage2 = New System.Windows.Forms.Label()
-        Me.LabelStage3 = New System.Windows.Forms.Label()
-        Me.TimerPanel = New System.Windows.Forms.Panel()
-        Me.LabelTimer = New System.Windows.Forms.Label()
-        Me.PropPanel = New System.Windows.Forms.Panel()
-        Me.LabelProp = New System.Windows.Forms.Label()
-        Me.SpeedLabel = New System.Windows.Forms.Label()
-        Me.AltLabel = New System.Windows.Forms.Label()
-        Me.PitchLabel = New System.Windows.Forms.Label()
-        Me.YawLabel = New System.Windows.Forms.Label()
-        Me.RollLabel = New System.Windows.Forms.Label()
-        Me.TabPage2 = New System.Windows.Forms.TabPage()
-        Me.Timer1 = New System.Windows.Forms.Timer(Me.components)
+        Me.TabControl1 = New TabControl()
+        Me.TabPage1 = New TabPage()
+        Me.PanelStage = New Panel()
+        Me.LabelStage1 = New Label()
+        Me.LabelStage2 = New Label()
+        Me.LabelStage3 = New Label()
+        Me.TimerPanel = New Panel()
+        Me.LabelTimer = New Label()
+        Me.PropPanel = New Panel()
+        Me.LabelProp = New Label()
+        Me.SpeedLabel = New Label()
+        Me.AltLabel = New Label()
+        Me.PitchLabel = New Label()
+        Me.YawLabel = New Label()
+        Me.RollLabel = New Label()
+        Me.TabPage2 = New TabPage()
+        Me.Timer1 = New Timer(Me.components)
 
-        ' Настройка элементов (пример)
         Me.Timer1.Interval = 1000
-
-        ' Добавление контролов и прочее здесь, если нужно
-
     End Sub
 End Class
