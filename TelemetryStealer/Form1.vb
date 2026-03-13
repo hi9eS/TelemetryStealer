@@ -31,5 +31,4 @@ Partial Class Form1
         MyBase.OnKeyDown(e)
         ' Добавьте обработку клавиш здесь
     End Sub
-
 End Class
